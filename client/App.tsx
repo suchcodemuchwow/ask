@@ -1,3 +1,5 @@
+import axios from 'axios'
+import Parser from 'html-react-parser'
 import { Box, Button, Heading, HStack, Input, NativeBaseProvider } from 'native-base'
 import React, { useState } from 'react'
 
@@ -6,8 +8,8 @@ type IAnswer = { answer: string; chunkId: string; confidence: number }
 const Answer = React.memo(({ chunk }: { chunk: IAnswer }) => {
   return (
     <Box bg="white" p="12" mb="2">
-      <Heading fontSize="2xl">{chunk.answer}</Heading>
-      <Heading fontSize="sm">{chunk.confidence}</Heading>
+      <Heading fontSize="2xl">{Parser(chunk.answer)}</Heading>
+      <Heading fontSize="sm">Confidence Level: {chunk.confidence}</Heading>
     </Box>
   )
 })
@@ -17,19 +19,18 @@ export default function App() {
   const [answers, setAnswers] = useState<IAnswer[]>([])
 
   const handleQuestionSubmit = async () => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      mode: 'no-cors',
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      body: JSON.stringify({ body: 'How do I remove a teammate?' })
-    }
+    const response = await axios.post(
+      'http://localhost:3000/api/questions',
+      { body: question },
+      {
+        headers: {
+          'Access-Control-Allow-Credentials': true
+        }
+      }
+    )
 
-    const response = await fetch('http://localhost:3000/api/questions', requestOptions)
-
-    // setAnswers(data)
-    // setQuestion('')
+    setAnswers(response.data)
+    setQuestion('')
   }
 
   return (
