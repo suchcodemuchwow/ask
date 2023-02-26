@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Parser from 'html-react-parser'
-import { Box, Button, Heading, HStack, Input, NativeBaseProvider } from 'native-base'
+import { Box, Button, Heading, HStack, Input, NativeBaseProvider, Spinner } from 'native-base'
 import React, { useState } from 'react'
 
 type IAnswer = { answer: string; chunkId: string; confidence: number }
@@ -17,8 +17,11 @@ const Answer = React.memo(({ chunk }: { chunk: IAnswer }) => {
 export default function App() {
   const [question, setQuestion] = useState('')
   const [answers, setAnswers] = useState<IAnswer[]>([])
+  const [loading, setLoading] = useState(false)
 
   const handleQuestionSubmit = async () => {
+    setLoading(true)
+
     const response = await axios.post(
       'http://localhost:3000/api/questions',
       { body: question },
@@ -29,6 +32,7 @@ export default function App() {
       }
     )
 
+    setLoading(false)
     setAnswers(response.data)
     setQuestion('')
   }
@@ -43,6 +47,7 @@ export default function App() {
               <Button onPress={handleQuestionSubmit}>Search</Button>
             </HStack>
           </Box>
+          {loading && <Spinner accessibilityLabel="Loading posts" />}
           {answers.map((answer, index) => (
             <Answer chunk={answer} key={answer.chunkId} />
           ))}
