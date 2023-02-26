@@ -1,0 +1,7 @@
+### Create a new Post
+POST http://localhost:3000/api/questions
+Content-Type: application/json
+
+{
+  "body": "How do I remove a teammate?"
+}
