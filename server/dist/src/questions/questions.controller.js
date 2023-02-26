@@ -35,9 +35,7 @@ let QuestionsController = QuestionsController_1 = class QuestionsController {
             accessToken: token,
         }));
         const answers = await Promise.all(readChunkRequests);
-        return {
-            data: answers.filter((a) => a.confidence > 70),
-        };
+        return answers.filter((a) => a.confidence > 70);
     }
 };
 __decorate([

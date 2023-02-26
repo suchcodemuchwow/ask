@@ -18,6 +18,7 @@ function setupSwagger(app) {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.setGlobalPrefix('api');
+    app.enableCors({ credentials: true, origin: '*' });
     config_1.ConfigModule.forRoot({ isGlobal: true });
     setupSwagger(app);
     await app.listen(3000);

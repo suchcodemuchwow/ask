@@ -7,10 +7,8 @@ export declare class QuestionsController {
     private readonly logger;
     constructor(askQuestionUsecase: Usecases.AskQuestion, createAccessTokenUsecase: Usecases.CreateJwtToken, readChunkUsecase: Usecases.ReadChunk);
     ask(questionDto: QuestionDto): Promise<{
-        data: {
-            answer: import("./entities/question.entity").ChunkHolderGenerateTokenResponse;
-            chunkId: string;
-            confidence: number;
-        }[];
-    }>;
+        answer: import("./entities/question.entity").ChunkHolderGenerateTokenResponse;
+        chunkId: string;
+        confidence: number;
+    }[]>;
 }

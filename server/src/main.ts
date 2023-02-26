@@ -21,6 +21,7 @@ function setupSwagger(app: INestApplication) {
   // Make all inputs validated based on dto's
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
+  app.enableCors({ credentials: true, origin: '*' });
 
   // Load .env variables
   ConfigModule.forRoot({ isGlobal: true });
